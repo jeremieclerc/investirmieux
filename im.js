@@ -10,13 +10,13 @@ function accounts(amount = 7500, risk = 0, bank = "BoursoBank") {
       "checkingAccount":{"BoursoBank":"BoursoBank","Fortuneo":"Compte Courant"},
       "avFE":{"BoursoBank":"Assurance Vie - Euro Exclusif","Fortuneo":"Fortuneo Vie - Opportunités 2"},
       "avMSCI":{"BoursoBank":"Assurance Vie - MSCI World - FR0010315770","Fortuneo":"Fortuneo Vie - MSCI World - FR0010315770"},
-      "code":{"BoursoBank":"JECL8857","Fortuneo":"12738112"},
-      "link":{"BoursoBank":"https://www.boursobank.com/landing/parrainage?code_parrain=","Fortuneo":"https://mabanque.fortuneo.fr/fr/offres-parrainage/offres-parrainage.jsp?origine=PARRAINAGE&codeParrain="}
+      "referralCode":{"BoursoBank":"JECL8857","Fortuneo":"12738112"},
+      "referralLink":{"BoursoBank":"https://www.boursobank.com/landing/parrainage?code_parrain=","Fortuneo":"https://mabanque.fortuneo.fr/fr/offres-parrainage/offres-parrainage.jsp?origine=PARRAINAGE&codeParrain="}
     };
     
     let obj = {};
     obj.accounts = [];
-    let amt = amount;
+    let amt = amount
     const checkingAccount = Math.min(amt, params["maxCheckingAccount"]);
     amt -= checkingAccount;
    
@@ -29,16 +29,17 @@ function accounts(amount = 7500, risk = 0, bank = "BoursoBank") {
     const ldds = Math.min(unrisked, params["maxLDDS"]);
     unrisked -= ldds;
     
-    obj.accounts.push({ "Category":params["cat1"][bank], "Name": params["checkingAccount"][bank], "Amount": checkingAccount });
-    if (livretA > 0) obj.accounts.push({ "Category":params["cat2"][bank], "Name": "Livret A", "Amount": livretA });
-    if (ldds > 0) obj.accounts.push({ "Category":params["cat2"][bank],"Name": "LDDS", "Amount": ldds });
-    if (unrisked > 0) obj.accounts.push({ "Category":params["cat3"][bank],"Name": params["avFE"][bank], "Amount": unrisked });
-    if (risked > 0) obj.accounts.push({ "Category":params["cat3"][bank],"Name": params["avMSCI"][bank], "Amount": risked });
+    obj.accounts.push({ "category":params["cat1"][bank], "name": params["checkingAccount"][bank], "amount": checkingAccount });
+    if (livretA > 0) obj.accounts.push({ "category":params["cat2"][bank], "name": "Livret A", "amount": livretA });
+    if (ldds > 0) obj.accounts.push({ "category":params["cat2"][bank],"name": "LDDS", "amount": ldds });
+    if (unrisked > 0) obj.accounts.push({ "category":params["cat3"][bank],"name": params["avFE"][bank], "amount": unrisked });
+    if (risked > 0) obj.accounts.push({ "category":params["cat3"][bank],"name": params["avMSCI"][bank], "amount": risked });
     
-    obj.accounts.push({"Category":"Nous Soutenir", "Name": "Code de Parrainage: " + params["code"][bank], "Amount": params["link"][bank] + params["code"][bank]  })
+    // referral
+    obj["referral"] = {"link":params["referralLink"][bank] + params["referralCode"][bank], "code": params["referralCode"][bank]}
     
     // calc avg yearly return
     amt = (livretA + ldds) * 0.03 + unrisked * 0.023 + risked * 0.1037;
-    obj["returns"] = {"irr": Math.round(amt / amount * 10000) / 10000, "Amount": Math.round(amt)};
+    obj["returns"] = {"irr": Math.round(amt / amount * 10000) / 10000, "amount": Math.round(amt)};
     return obj;
   }
