@@ -1,4 +1,4 @@
-function accounts(amount = 7500, risk = 0, bank = "BoursoBank") {
+function accounts(amount = 7500, risk = 1, bank = "BoursoBank") {
     const params = {
       "maxCheckingAccount": 2000,
       "minLivretA": 5000,
@@ -14,6 +14,7 @@ function accounts(amount = 7500, risk = 0, bank = "BoursoBank") {
       "referralLink":{"BoursoBank":"https://www.boursobank.com/landing/parrainage?code_parrain=","Fortuneo":"https://mabanque.fortuneo.fr/fr/offres-parrainage/offres-parrainage.jsp?origine=PARRAINAGE&codeParrain="}
     };
     
+    risk -= 1;
     let obj = {};
     obj.accounts = [];
     let amt = amount
@@ -43,6 +44,8 @@ function accounts(amount = 7500, risk = 0, bank = "BoursoBank") {
     obj["returns"] = {"irr": Math.round(amt / amount * 10000) / 10000, "amount": Math.round(amt)};
     return obj;
   }
+
+console.log(accounts(50000, 2));
 
 // Normalize strings
 function normalizeString(str) {

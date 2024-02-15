@@ -6,6 +6,7 @@
     --primary-color: #6173E5;
     --secondary-color: #4e5ae0;
     --tertiary-color: #D8DCF9;
+    --light-purple: #e1e4fa;
     --success-color: #28a745;
     --danger-color: #dc3545;
     --warning-color: #ffc107;
@@ -21,7 +22,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     font-weight: 400;
     font-size: 16px;
     margin: 0;
@@ -103,6 +104,10 @@ button, input[type="submit"] {
     transition: all 0.3s;
 }
 
+#lancer-la-simulation {
+    padding: 1rem 2rem;
+}
+
 .primary {
     background-color: var(--primary-color);
     color: #fff;
@@ -134,13 +139,17 @@ a:hover {
 
 section, header {
     display: flex;
-    padding: 3rem 6rem;
+    padding: 1.5rem 6rem;
     justify-content: space-between;
     align-self: stretch;
 }
 
 section.is-small, header.is-small {
-    padding: 3rem 12rem;
+    padding: 1.5rem 12rem;
+}
+
+div.is-small {
+    padding: 0rem 12rem;
 }
 
 /* Paragraphs */
@@ -181,20 +190,21 @@ p {
 
 .input .icon {
     position: absolute;
-    bottom: 0.5rem;
     right: 0.5rem;
+    top: calc(50% - 0px);
 }
 
 input, select {
+    font-size: 24px;
     display: flex;
     cursor: pointer;
-    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    padding: 0.75rem 0.75rem 0.75rem 1.5rem;
     justify-content: space-between;
     align-items: center;
     flex: 1 0 0;
     border-radius: 6.1875rem;
-    border: 1px solid var(--gray-200, #E9ECEF);
-    background: var(--gray-100, #F8F9FA);
+    border: 1px solid var(--primary-color, #E9ECEF);
+    background: var(--light-purple, #F8F9FA);
     transition: all 0.3s;
 }
 
@@ -217,6 +227,35 @@ select {
 input[type="submit"]:focus {
     border: none;
     outline: none;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    padding:0;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    height: 1rem;
+    background: var(--gray-200);
+    border-radius: 8px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: -7px;
+    background-color: var(--primary-color);
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+ }
+
+label {
+    padding-left: 0.5rem;
+    font-size: 1.25rem;
 }
 
 /* Flex classes */
@@ -258,8 +297,8 @@ input[type="submit"]:focus {
 /* Icons */
 
 .icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
 }
 
 .icon.wrapped {

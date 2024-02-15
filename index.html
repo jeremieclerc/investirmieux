@@ -1,3 +1,11 @@
+<!-- @todo
+* responsive
+* afficher les 5 niveaux de risque (il faut des paliers, des ticks marks slider)
+* afficher un temps de chargement
+* une fois le résultat affiché, il faut que ça soit dynamique à chaque changement d'input
+* prendre les couleurs fortuneo pour repliquer la charte fortuneo
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +33,7 @@
             <p>Une recommendation simple et performante de placement sans frais.</p>
         </div>
         <div>
-            <img src="images/illustration.svg" alt="Illustration de InvestirMieux">
+            <img style="height: 200px;" src="images/illustration.svg" alt="Illustration de InvestirMieux">
         </div>
     </header>
     <section class="column gap-medium" id="simulateur">
@@ -41,8 +49,18 @@
                     <img class="icon" src="images/icon/euro.svg" alt="Euro">
                 </div>
                 <div class="input">
-                    <label for="risk">Niveau de risque</label >
-                    <input type="range" id="risk" min="0" max="4" value=0 required>
+                    <div class="row gap-tiny">
+                        <label for="risk">Niveau de risque : <output id="output_range">1</output> / 5</label >
+                    </div>
+                    <!-- <input type="range" id="risk" min="1" max="5" value=0 required oninput="document.getElementById('output_range').value = this.value"> -->
+                    <input type="range" min="1" id="risk" max="5" step="1" value=1 required oninput="document.getElementById('output_range').value = this.value" list="steplist">
+                    <datalist id="steplist">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </datalist>
                 </div>
                 <div class="input">
                     <label for="bank">Banque</label>
@@ -56,7 +74,7 @@
             <!-- <button class="primary">Lancer la simulation</button> -->
             <input id="lancer-la-simulation" onclick="generate()" class="primary" type="submit" value="Lancer la simulation"> 
         </form>
-        <div id="results" class="column gap-small">
+        <div id="results" class="column gap-small is-small">
             <!-- Exemple de card -->
             <!-- <div class="boursorama-card">
                 <div class="row space-between">
