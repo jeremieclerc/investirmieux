@@ -14,14 +14,16 @@ function accounts(amount = 7500, risk = 1, bank = "BoursoBank") {
       "referralLink":{"BoursoBank":"https://www.boursobank.com/landing/parrainage?code_parrain=","Fortuneo":"https://mabanque.fortuneo.fr/fr/offres-parrainage/offres-parrainage.jsp?origine=PARRAINAGE&codeParrain="}
     };
     
-    risk -= 1;
+    if (risk < 1) {risk = 1} else if (risk > 5) {risk = 5};
+
     let obj = {};
     obj.accounts = [];
     let amt = amount
     const checkingAccount = Math.min(amt, params["maxCheckingAccount"]);
     amt -= checkingAccount;
    
-    let unrisked = Math.round(Math.max(amt * (1 - risk) , params["minLivretA"])/100)*100;
+
+    let unrisked = Math.round(Math.max(amt * ((5 - risk) / 4) , params["minLivretA"])/100)*100;
     let risked = (amt - unrisked);
     
     const livretA = Math.min(unrisked, params["maxLivretA"]);
@@ -29,23 +31,23 @@ function accounts(amount = 7500, risk = 1, bank = "BoursoBank") {
     
     const ldds = Math.min(unrisked, params["maxLDDS"]);
     unrisked -= ldds;
+
     
     obj.accounts.push({ "category":params["cat1"][bank], "name": params["checkingAccount"][bank], "amount": checkingAccount });
     if (livretA > 0) obj.accounts.push({ "category":params["cat2"][bank], "name": "Livret A", "amount": livretA });
     if (ldds > 0) obj.accounts.push({ "category":params["cat2"][bank],"name": "LDDS", "amount": ldds });
     if (unrisked > 0) obj.accounts.push({ "category":params["cat3"][bank],"name": params["avFE"][bank], "amount": unrisked });
     if (risked > 0) obj.accounts.push({ "category":params["cat3"][bank],"name": params["avMSCI"][bank], "amount": risked });
-    
+
     // referral
-    obj["referral"] = {"link":params["referralLink"][bank] + params["referralCode"][bank], "code": params["referralCode"][bank]}
+    obj.accounts.push({"category":"Soutenir le site","name":params["referralLink"][bank] + params["referralCode"][bank], "amount": params["referralCode"][bank]})
     
     // calc avg yearly return
     amt = (livretA + ldds) * 0.03 + unrisked * 0.023 + risked * 0.1037;
     obj["returns"] = {"irr": Math.round(amt / amount * 10000) / 10000, "amount": Math.round(amt)};
+    
     return obj;
   }
-
-console.log(accounts(50000, 2));
 
 // Normalize strings
 function normalizeString(str) {
