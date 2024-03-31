@@ -1,15 +1,18 @@
-function accounts(amount = 7500, risk = 1, bank = "BoursoBank") {
+function accounts(amount = 7500, risk = 1, bank = "BoursoBank", isLongTerm = 0) {
     const params = {
       "maxCheckingAccount": 2000,
       "minLivretA": 5000,
       "maxLivretA": 22950,
       "maxLDDS": 12000,
+      "maxPEA": 150000,
       "cat1":{"BoursoBank":"Mon Compte Bancaire","Fortuneo":"Compte Courant"},
       "cat2":{"BoursoBank":"Mon épargne","Fortuneo":"Épargne"},
       "cat3":{"BoursoBank":"Mes placements financiers","Fortuneo":"Assurance vie"},
+      "cat4":{"BoursoBank":"Mes placements financiers","Fortuneo":"Bourse"},
       "checkingAccount":{"BoursoBank":"BoursoBank","Fortuneo":"Compte Courant"},
       "avFE":{"BoursoBank":"Assurance Vie - Euro Exclusif","Fortuneo":"Fortuneo Vie - Opportunités 2"},
       "avMSCI":{"BoursoBank":"Assurance Vie - MSCI World - FR0010315770","Fortuneo":"Fortuneo Vie - MSCI World - FR0010315770"},
+      "pea":{"BoursoBank":"PEA - Amundi MSCI World UCITS ETF EUR C- LU1681043599","Fortuneo":"PEA - Amundi MSCI World UCITS ETF EUR C - LU1681043599"},
       "referralCode":{"BoursoBank":"JECL8857","Fortuneo":"12738112"},
       "referralLink":{"BoursoBank":"https://www.boursobank.com/landing/parrainage?code_parrain=","Fortuneo":"https://mabanque.fortuneo.fr/fr/offres-parrainage/offres-parrainage.jsp?origine=PARRAINAGE&codeParrain="}
     };
@@ -32,18 +35,25 @@ function accounts(amount = 7500, risk = 1, bank = "BoursoBank") {
     const ldds = Math.min(unrisked, params["maxLDDS"]);
     unrisked -= ldds;
 
+    let pea = 0
+    if (isLongTerm) {
+        pea = Math.min(risked, params["maxPEA"])
+        risked -= pea
+        };
+    
     
     obj.accounts.push({ "category":params["cat1"][bank], "name": params["checkingAccount"][bank], "amount": checkingAccount });
     if (livretA > 0) obj.accounts.push({ "category":params["cat2"][bank], "name": "Livret A", "amount": livretA });
     if (ldds > 0) obj.accounts.push({ "category":params["cat2"][bank],"name": "LDDS", "amount": ldds });
     if (unrisked > 0) obj.accounts.push({ "category":params["cat3"][bank],"name": params["avFE"][bank], "amount": unrisked });
     if (risked > 0) obj.accounts.push({ "category":params["cat3"][bank],"name": params["avMSCI"][bank], "amount": risked });
+    if (pea > 0) obj.accounts.push({ "category":params["cat4"][bank],"name": params["pea"][bank], "amount": pea });
 
     // referral
     obj.accounts.push({"category":"Soutenir le site","name":params["referralLink"][bank] + params["referralCode"][bank], "amount": params["referralCode"][bank]})
     
     // calc avg yearly return
-    amt = (livretA + ldds) * 0.03 + unrisked * 0.023 + risked * 0.1037;
+    amt = (livretA + ldds) * 0.03 + unrisked * 0.023 + risked * 0.1037 + pea * 0.1207;
     obj["returns"] = {"irr": Math.round(amt / amount * 10000) / 10000, "amount": Math.round(amt)};
     
     return obj;
@@ -115,7 +125,7 @@ function generateDivs(dataArray) {
         else { 
             text3.innerHTML = item.amount
             text2.innerHTML = "Parrainage"
-            text1.innerHTML = "<a href=" + item.name + ">Ciquez ici</a> Ou utiliser le code:"
+            text1.innerHTML = "Soutenez nous en utilisant le code de parrainage à droite, où <a href=" + item.name + ">Ciquez ici</a>"
         };
         
         columnDiv.appendChild(text1);
