@@ -106,13 +106,17 @@ function generateDivs(dataArray) {
         var text1 = document.createElement('p');
         var text2 = document.createElement('p');
         var text3 = document.createElement('p');
-        text1.innerHTML = item.name;
-        text2.innerHTML = bank;
         
-        if (item.category != "Soutenir le site")
-            {text3.innerHTML = item.amount.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + '€'}
-        else 
-            {text3.innerHTML = item.amount};
+        if (item.category != "Soutenir le site") {
+            text3.innerHTML = item.amount.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + '€'
+            text2.innerHTML = bank;
+            text1.innerHTML = item.name
+        }
+        else { 
+            text3.innerHTML = item.amount
+            text2.innerHTML = "Parrainage"
+            text1.innerHTML = "<a href=" + item.name + ">Ciquez ici</a> Ou utiliser le code:"
+        };
         
         columnDiv.appendChild(text1);
         columnDiv.appendChild(text2);
