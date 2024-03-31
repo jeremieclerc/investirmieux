@@ -108,7 +108,12 @@ function generateDivs(dataArray) {
         var text3 = document.createElement('p');
         text1.innerHTML = item.name;
         text2.innerHTML = bank;
-        text3.innerHTML = item.amount.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + '€';
+        
+        if (item.category != "Soutenir le Site")
+            {text3.innerHTML = item.amount.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + '€'}
+        else 
+            {text3.innerHTML = item.amount};
+        
         columnDiv.appendChild(text1);
         columnDiv.appendChild(text2);
 
