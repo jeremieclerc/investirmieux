@@ -143,7 +143,7 @@ function generate() {
     const amount = document.getElementById("amount").value;
     const risk = document.getElementById("risk").value;
     const bank = document.getElementById("bank").value;
-    const bank = document.getElementById("isLongTerm").checked;
+    const isLongTerm = document.getElementById("isLongTerm").checked;
     const data = accounts(amount, risk, bank, isLongTerm);
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = ''; // Remove all content inside the div
