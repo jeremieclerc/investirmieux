@@ -109,7 +109,7 @@ function generateDivs(dataArray) {
         text1.innerHTML = item.name;
         text2.innerHTML = bank;
         
-        if (item.category != "Soutenir le Site")
+        if (item.category != "Soutenir le site")
             {text3.innerHTML = item.amount.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + '€'}
         else 
             {text3.innerHTML = item.amount};
