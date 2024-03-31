@@ -53,6 +53,14 @@
                     <img class="icon" src="images/icon/euro.svg" alt="Euro">
                 </div>
                 <div class="input">
+                    <label for="bank">Banque</label>
+                    <select id="bank">
+                        <option value="BoursoBank">Boursorama</option>
+                        <option value="Fortuneo">Fortuneo</option>
+                    </select>
+                    <img  class="icon" src="images/icon/select.svg" alt="Select">
+                </div>
+                <div class="input">
                     <div class="row gap-tiny">
                         <label for="risk">Niveau de risque : <output id="output_range">1</output> / 5</label >
                     </div>
@@ -67,12 +75,11 @@
                     </datalist>
                 </div>
                 <div class="input">
-                    <label for="bank">Banque</label>
-                    <select id="bank">
-                        <option value="BoursoBank">Boursorama</option>
-                        <option value="Fortuneo">Fortuneo</option>
-                    </select>
-                    <img  class="icon" src="images/icon/select.svg" alt="Select">
+                    <p>Placement long terme ?</p>
+                    <label class="switch">
+                        <input id="isLongTerm" name="isLongTerm" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
             </div>
             <!-- <button class="primary">Lancer la simulation</button> -->
