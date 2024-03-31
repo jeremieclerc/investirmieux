@@ -344,46 +344,46 @@ a.card:hover {
     background-color: var(--gray-100); 
 }
 
-/* Boursorama */
+/* BoursoBank */
 
-.boursorama-card {
+.BoursoBank-card {
     overflow: hidden;
     border-radius: 0.5rem;
     box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.10);
     background: #FFF;
 }
 
-.boursorama-card p {
+.BoursoBank-card p {
     font-weight: 600;
     line-height: 1.5rem; /* 150% */
 }
 
-.boursorama-card > div {
+.BoursoBank-card > div {
     padding: 0.375rem 1rem;
 }
 
-.boursorama-card > div:first-child {
+.BoursoBank-card > div:first-child {
     color: #FFF;
     text-align: center;
     background: #4CA5DF;
 }
 
 /* Simulator */
-.boursorama-card .row-card {
+.BoursoBank-card .row-card {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.boursorama-card  .row-card > p {
+.BoursoBank-card  .row-card > p {
     color: #6CD37C;
 }
 
-.boursorama-card .row-card .column p:first-child {
+.BoursoBank-card .row-card .column p:first-child {
     color: #516EA1;
 }
 
-.boursorama-card .row-card .column p:last-child {
+.BoursoBank-card .row-card .column p:last-child {
     color: #C4337D;
     font-size: 0.75rem;
     font-weight: 400;
@@ -391,26 +391,26 @@ a.card:hover {
 
 /* Fortuneo */
 
-.fortuneo-card {
+.Fortuneo-card {
     color: #232323;
     overflow: hidden;
     background: #FFF;
 }
 
-.fortuneo-card p {
+.Fortuneo-card p {
     font-weight: 600;
     line-height: 1.5rem; /* 150% */
     font-size: 13px;
 }
 
-.fortuneo-card .header-card {
+.Fortuneo-card .header-card {
     padding: 18px 0px;
     font-size: 18px;
     font-weight: bold;
     line-height: 32px;
 }
 
-.fortuneo-card .row-card {
+.Fortuneo-card .row-card {
     background-color: #FAFAFA;
     border-left: 1px solid #D0D0D0;
     border-right: 1px solid #D0D0D0;
@@ -420,23 +420,23 @@ a.card:hover {
     padding: 16px;
 }
 
-.fortuneo-card .row-card:nth-child(2) {
+.Fortuneo-card .row-card:nth-child(2) {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     border-top: 1px solid #D0D0D0;
 }
 
-.fortuneo-card .row-card:last-child {
+.Fortuneo-card .row-card:last-child {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     border-bottom: 1px solid #D0D0D0;
 }
 
-.fortuneo-card .row-card:nth-child(odd) {
+.Fortuneo-card .row-card:nth-child(odd) {
     background-color: #FFFFFF;
 }
 
-.fortuneo-card .row-card > p {
+.Fortuneo-card .row-card > p {
     font-size: 1.2rem;
 }
 
