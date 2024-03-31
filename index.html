@@ -4,6 +4,9 @@
 * afficher un temps de chargement
 * une fois le résultat affiché, il faut que ça soit dynamique à chaque changement d'input
 * prendre les couleurs fortuneo pour repliquer la charte fortuneo
+* faq
+* lien cliquable dans le "Soutenir le site"
+* IRR
 -->
 
 <!DOCTYPE html>
@@ -16,6 +19,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 <body>
+    <div class="container">
     <nav class="navbar">
         <div class="logo">
             <img src="images/logo.svg" alt="Logo de InvestirMieux">
@@ -91,6 +95,26 @@
             </div> -->
         </div>
     </section>
+    <section class="column gap-medium" id="faq">
+        <div class="column gap-tiny">
+            <h2>FAQ</h2>
+            <p>Les questions les plus fréquentes</p>
+        </div>
+        <div class="column gap-medium">
+            <div class="card">
+                <h3>Comment fonctionne le simulateur ?</h3>
+                <p>Le simulateur vous permet de trouver le placement le plus adapté à votre profil. Il vous suffit de renseigner le montant que vous souhaitez placer, votre niveau de risque et votre banque. Le simulateur vous proposera alors le placement le plus adapté à votre profil.</p>
+            </div>
+            <div class="card">
+                <h3>Quels sont les frais de ce service ?</h3>
+                <p>Le service est entièrement gratuit. Nous ne prenons aucune commission sur les placements que nous vous recommandons.</p>
+            </div>
+            <div class="card">
+                <h3>Quelles sont les banques disponibles ?</h3>
+                <p>Actuellement, nous travaillons avec Boursorama et Fortuneo. Nous prévoyons d'ajouter d'autres banques dans le futur.</p>
+            </div>
+        </div>
+    </section>
     <section class="gap-medium" id="informations">
         <a href="#" class="card">
             <img class="icon wrapped" src="images/icon/people.svg" alt="Personnes">
@@ -151,11 +175,13 @@
             </div>
         </div>
     </section>
+</div>
     <footer>
-        <div class="column gap-small">
-            <img src="images/logo_white.svg" alt="Logo de InvestirMieux">
-            <p class="is-light-gray">Le site qui vous aide a mieux placer votre argent,<br/> et avec le minimum de frais !</p>
-        </div>
+            <div class="column gap-small">
+                <img src="images/logo_white.svg" alt="Logo de InvestirMieux">
+                <p class="is-light-gray">Le site qui vous aide a mieux placer votre argent,<br/> et avec le minimum de frais !</p>
+            </div>
     </footer>
+
 </body>
 </html>
