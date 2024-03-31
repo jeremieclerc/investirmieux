@@ -93,7 +93,7 @@ function generateDivs(dataArray) {
         if (!categoryDiv) {
             // Create a new div with the corresponding ID
             categoryDiv = document.createElement('div');
-            categoryDiv.classList.add('boursorama-card');
+            categoryDiv.classList.add(bank + "-card");
             categoryDiv.id = categoryId;
 
             // Create a div with class "header-card"
