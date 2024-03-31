@@ -21,9 +21,9 @@ function accounts(amount = 7500, risk = 1, bank = "BoursoBank") {
     let amt = amount
     const checkingAccount = Math.min(amt, params["maxCheckingAccount"]);
     amt -= checkingAccount;
-   
+    let unrisked = amt;
 
-    let unrisked = Math.round(Math.max(amt * ((5 - risk) / 4) , params["minLivretA"])/100)*100;
+    if (amt > params["minLivretA"]) {unrisked = Math.round(Math.max(amt * ((5 - risk) / 4) , params["minLivretA"])/100)*100};
     let risked = (amt - unrisked);
     
     const livretA = Math.min(unrisked, params["maxLivretA"]);
