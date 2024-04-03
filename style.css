@@ -109,7 +109,7 @@ button, input[type="submit"] {
     transition: all 0.3s;
 }
 
-#lancer-la-simulation {
+input[type="submit"] {
     padding: 1rem 2rem;
 }
 
@@ -405,11 +405,10 @@ a.card:hover {
 .Fortuneo-card p {
     font-weight: 600;
     line-height: 1.5rem; /* 150% */
-    font-size: 13px;
+    font-size: 16px;
 }
 
 .Fortuneo-card .header-card {
-    padding: 18px 0px;
     font-size: 18px;
     font-weight: bold;
     line-height: 32px;

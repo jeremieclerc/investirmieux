@@ -1,3 +1,5 @@
+var isGenerated = false;
+
 function accounts(amount = 7500, risk = 1, bank = "BoursoBank", isLongTerm = 0) {
     const params = {
       "maxCheckingAccount": 2000,
@@ -72,23 +74,31 @@ function normalizeString(str) {
 }
 
 // Function to generate HTML divs
-function generateDivs(dataArray) {
+function generateDivs(dataArray, returns) {
     // Selected bank
     const bank = document.getElementById("bank").value;
 
     // Results div
     const resultsDiv = document.getElementById('results');
 
-    const title = document.createElement('h2')
-    title.textContent = 'Voici la répartition idéale:';
+    const amount = returns['amount'].toLocaleString('fr-FR', {
+        style: 'currency', 
+        currency: 'EUR', 
+        minimumFractionDigits: 0
+    });
+    const title = document.createElement('h2');
+    title.textContent = 'Rendement attendu : '+ (returns['irr']*100).toFixed(2) +'% par an. Soit ' + amount + ' annuel.';
     resultsDiv.appendChild(title);
+
+    const title2 = document.createElement('h2')
+    title2.textContent = 'Avec la répartition suivante:';
+    resultsDiv.appendChild(title2);
 
     dataArray.forEach(item => {
         const categoryId = normalizeString(item.category);
 
         // Check if the div with the ID already exists
         let categoryDiv = document.getElementById(categoryId);
-        console.log(categoryDiv)
 
         if (!categoryDiv) {
             // Create a new div with the corresponding ID
@@ -119,7 +129,7 @@ function generateDivs(dataArray) {
         
         if (item.category != "Soutenir le site") {
             text3.innerHTML = item.amount.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + '€'
-            text2.innerHTML = bank;
+            if (bank === "BoursoBank") {text2.innerHTML = bank};
             text1.innerHTML = item.name
         }
         else { 
@@ -140,6 +150,17 @@ function generateDivs(dataArray) {
 }
 
 function generate() {
+    if (!isGenerated) {
+        isGenerated = true;
+        document.getElementById("firstRun").style.display = "none";
+        // document.getElementById("simulateur").scrollIntoView({
+        //     offset: '10px',
+        //     behavior: 'smooth'
+        // });
+        const element = document.getElementById('simulateur');
+        const y = element.getBoundingClientRect().top + window.pageYOffset - 30;
+        window.scrollTo({top: y, behavior: 'smooth'});
+    }
     const amount = document.getElementById("amount").value;
     const risk = document.getElementById("risk").value;
     const bank = document.getElementById("bank").value;
@@ -147,8 +168,7 @@ function generate() {
     const data = accounts(amount, risk, bank, isLongTerm);
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = ''; // Remove all content inside the div
-    generateDivs(data.accounts);
-    console.log(data.accounts);
+    generateDivs(data.accounts, data.returns);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -162,7 +182,25 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    document.getElementById("lancer-la-simulation").addEventListener("click", function(event){
+    document.getElementById("firstRun").addEventListener("click", function(event){
         event.preventDefault()
       });
+
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('input', (event) => {
+            if (isGenerated) {
+                generate();
+            }
+        });
+    });
+
+    var numberInput = document.querySelector('input[type="number"]');
+
+    numberInput.addEventListener('input', (event) => {
+        var value = parseInt(numberInput.value);
+
+        if (value < 0) {
+            numberInput.value = '0';
+        }
+    })
 });

@@ -40,16 +40,16 @@
             <img style="height: 200px;" src="images/illustration.svg" alt="Illustration de InvestirMieux">
         </div>
     </header>
-    <section class="column gap-medium" id="simulateur">
+    <section class="column gap-medium">
         <div class="column gap-tiny">
             <h2>Comment ça marche ?</h2>
             <p>Choisissez votre montant, niveau de risque et votre banque.</p>
         </div>
         <form class="column gap-medium">
-            <div class="inputs">
+            <div class="inputs" id="simulateur">
                 <div class="input">
                     <label for="amount">Montant</label>
-                    <input type="number" id="amount" placeholder="1 000€" value=35000 required>
+                    <input type="number" id="amount" placeholder="1 000€" value=35000 min="0" max="1000000000" required>
                     <img class="icon" src="images/icon/euro.svg" alt="Euro">
                 </div>
                 <div class="input">
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <!-- <button class="primary">Lancer la simulation</button> -->
-            <input id="lancer-la-simulation" onclick="generate()" class="primary" type="submit" value="Lancer la simulation"> 
+            <input id="firstRun" onclick="generate()" class="primary" type="submit" value="Lancer la simulation"> 
         </form>
         <div id="results" class="column gap-small is-small">
             <!-- Exemple de card -->
