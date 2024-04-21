@@ -544,3 +544,42 @@ footer {
   .slider.round:before {
     border-radius: 50%;
   }
+
+/* Responsive */
+
+@media only screen and (max-width: 1000px) {
+    .container {
+        max-width: none;
+    }
+
+    header .gap-small {
+        gap: 3rem;
+    }
+
+    nav .links {
+        display: none;
+    }
+
+    .hide-mobile {
+        display: none;
+    }
+
+    .inputs {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 2rem;
+        justify-content: normal;
+    }
+
+    .input {
+        max-width: none;
+    }
+
+    section {
+        flex-direction: column;
+    }
+
+    div.is-small {
+        padding: 0rem 6rem;
+    }
+}
