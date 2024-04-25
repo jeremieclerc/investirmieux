@@ -13,8 +13,8 @@ function accounts(amount = 7500, risk = 1, bank = "BoursoBank", isLongTerm = 0) 
       "cat4":{"BoursoBank":"Mes placements financiers","Fortuneo":"Bourse"},
       "checkingAccount":{"BoursoBank":"BoursoBank","Fortuneo":"Compte Courant"},
       "avFE":{"BoursoBank":"Assurance Vie - Euro Exclusif","Fortuneo":"Fortuneo Vie - Opportunités 2"},
-      "avMSCI":{"BoursoBank":"Assurance Vie - MSCI World - FR0010315770","Fortuneo":"Fortuneo Vie - MSCI World - FR0010315770"},
-      "pea":{"BoursoBank":"PEA - Amundi MSCI World UCITS ETF EUR C- LU1681043599","Fortuneo":"PEA - Amundi MSCI World UCITS ETF EUR C - LU1681043599"},
+      "avMSCI":{"BoursoBank":"Assurance Vie - Amundi MSCI World - FR0010315770","Fortuneo":"Fortuneo Vie - Amundi MSCI World - FR0010315770"},
+      "pea":{"BoursoBank":"PEA - iShares MSCI World ⁠(WPEA) - IE0002XZSHO1","Fortuneo":"PEA - iShares MSCI World ⁠(WPEA) - IE0002XZSHO1"},
       "referralCode":{"BoursoBank":"JECL8857","Fortuneo":"12738112"},
       "referralLink":{"BoursoBank":"https://www.boursobank.com/landing/parrainage?code_parrain=","Fortuneo":"https://mabanque.fortuneo.fr/fr/offres-parrainage/offres-parrainage.jsp?origine=PARRAINAGE&codeParrain="}
     };
