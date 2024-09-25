@@ -1,194 +1,944 @@
-<!-- @todo
-* responsive
-* afficher les 5 niveaux de risque (il faut des paliers, des ticks marks slider)
-* afficher un temps de chargement
-* une fois le résultat affiché, il faut que ça soit dynamique à chaque changement d'input
-* prendre les couleurs fortuneo pour repliquer la charte fortuneo
-* faq
-* lien cliquable dans le "Soutenir le site"
-* IRR
--->
-
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Wed Sep 25 2024 21:00:10 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="66f478ffa12e94d5363b5331" data-wf-site="66f478ffa12e94d5363b5332" lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Investir mieux</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+  <meta charset="utf-8">
+  <title>Investir mieux, c&#x27;est simple !</title>
+  <meta content="Investirmieux.fr vous permet de simuler facilement et rapidement un placement selon vos critères. Puis, ouvrez un compte bancaire en 10m avec nos tutoriels !" name="description">
+  <meta content="Investir mieux, c&#x27;est simple !" property="og:title">
+  <meta content="Investirmieux.fr vous permet de simuler facilement et rapidement un placement selon vos critères. Puis, ouvrez un compte bancaire en 10m avec nos tutoriels !" property="og:description">
+  <meta content="https://cdn.prod.website-files.com/65e993ccb9364bc574d6ac9e/66f476c9b6987c79f09a17bd_InvestirMieux%20Logo%20Display.png" property="og:image">
+  <meta content="Investir mieux, c&#x27;est simple !" property="twitter:title">
+  <meta content="Investirmieux.fr vous permet de simuler facilement et rapidement un placement selon vos critères. Puis, ouvrez un compte bancaire en 10m avec nos tutoriels !" property="twitter:description">
+  <meta content="https://cdn.prod.website-files.com/65e993ccb9364bc574d6ac9e/66f476c9b6987c79f09a17bd_InvestirMieux%20Logo%20Display.png" property="twitter:image">
+  <meta property="og:type" content="website">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/investirmieux-68dc60430c05aa6e61a6229f8.webflow.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Space Grotesk:regular,500,600,700","Urbanist:regular,500,600,700,800,900,italic,500italic,600italic,700italic,800italic,900italic","Urbanist:300"]  }});</script>
+  <script src="https://use.typekit.net/nvy0zwl.js" type="text/javascript"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon"><!--  Keep this css code to improve the font quality -->
+  <style>
+  * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -o-font-smoothing: antialiased;
+}
+</style>
+  <script>
+var isGenerated = false;
+function accounts(amount = 7500, risk = 1, bank = "BoursoBank", isLongTerm = 0) {
+    const params = {
+      "maxCheckingAccount": 2000,
+      "minLivretA": 5000,
+      "maxLivretA": 22950,
+      "maxLDDS": 12000,
+      "maxPEA": 150000,
+      "cat1":{"BoursoBank":"Mon Compte Bancaire","Fortuneo":"Compte Courant"},
+      "cat2":{"BoursoBank":"Mon épargne","Fortuneo":"Épargne"},
+      "cat3":{"BoursoBank":"Mes placements financiers","Fortuneo":"Assurance vie"},
+      "cat4":{"BoursoBank":"Mes placements financiers","Fortuneo":"Bourse"},
+      "checkingAccount":{"BoursoBank":"BoursoBank","Fortuneo":"Compte Courant"},
+      "avFE":{"BoursoBank":"Assurance Vie - Euro Exclusif","Fortuneo":"Fortuneo Vie - Opportunités 2"},
+      "avMSCI":{"BoursoBank":"Assurance Vie - MSCI World - FR0010315770","Fortuneo":"Fortuneo Vie - MSCI World - FR0010315770"},
+      "pea":{"BoursoBank":"PEA - Amundi MSCI World UCITS ETF EUR C- LU1681043599","Fortuneo":"PEA - Amundi MSCI World UCITS ETF EUR C - LU1681043599"},
+      "referralCode":{"BoursoBank":"JECL8857","Fortuneo":"12738112"},
+      "referralLink":{"BoursoBank":"https://www.boursobank.com/landing/parrainage?code_parrain=","Fortuneo":"https://mabanque.fortuneo.fr/fr/offres-parrainage/offres-parrainage.jsp?origine=PARRAINAGE&codeParrain="}
+    };
+    if (risk < 1) {risk = 1} else if (risk > 5) {risk = 5};
+    let obj = {};
+    obj.accounts = [];
+    let amt = amount
+    const checkingAccount = Math.min(amt, params["maxCheckingAccount"]);
+    amt -= checkingAccount;
+    let unrisked = amt;
+    if (amt > params["minLivretA"]) {unrisked = Math.round(Math.max(amt * ((5 - risk) / 4) , params["minLivretA"])/100)*100};
+    let risked = (amt - unrisked);
+    const livretA = Math.min(unrisked, params["maxLivretA"]);
+    unrisked -= livretA;
+    const ldds = Math.min(unrisked, params["maxLDDS"]);
+    unrisked -= ldds;
+    let pea = 0
+    if (isLongTerm) {
+        pea = Math.min(risked, params["maxPEA"])
+        risked -= pea
+        };
+    obj.accounts.push({ "category":params["cat1"][bank], "name": params["checkingAccount"][bank], "amount": checkingAccount });
+    if (livretA > 0) obj.accounts.push({ "category":params["cat2"][bank], "name": "Livret A", "amount": livretA });
+    if (ldds > 0) obj.accounts.push({ "category":params["cat2"][bank],"name": "LDDS", "amount": ldds });
+    if (unrisked > 0) obj.accounts.push({ "category":params["cat3"][bank],"name": params["avFE"][bank], "amount": unrisked });
+    if (risked > 0) obj.accounts.push({ "category":params["cat3"][bank],"name": params["avMSCI"][bank], "amount": risked });
+    if (pea > 0) obj.accounts.push({ "category":params["cat4"][bank],"name": params["pea"][bank], "amount": pea });
+    // referral
+    obj.accounts.push({"category":"Soutenir le site","name":params["referralLink"][bank] + params["referralCode"][bank], "amount": params["referralCode"][bank]})
+    // calc avg yearly return
+    amt = (livretA + ldds) * 0.03 + unrisked * 0.023 + risked * 0.1037 + pea * 0.1207;
+    obj["returns"] = {"irr": Math.round(amt / amount * 10000) / 10000, "amount": Math.round(amt)};
+    return obj;
+  }
+// Normalize strings
+function normalizeString(str) {
+    return String(str)
+    .normalize('NFKD') // split accented characters into their base characters and diacritical marks
+    .replace(/[\u0300-\u036f]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
+    .trim() // trim leading or trailing whitespace
+    .toLowerCase() // convert to lowercase
+    .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
+    .replace(/\s+/g, '-') // replace spaces with hyphens
+    .replace(/-+/g, '-'); // remove consecutive hyphens
+}
+// Function to generate HTML divs
+function generateDivs(dataArray, returns) {
+    // Selected bank
+    const bank = document.getElementById("bank").value;
+    // Results div
+    const resultsDiv = document.getElementById('results');
+    const amount = returns['amount'].toLocaleString('fr-FR', {
+        style: 'currency', 
+        currency: 'EUR', 
+        minimumFractionDigits: 0
+    });
+    const title = document.createElement('h3');
+    title.innerHTML = 'Rendement attendu : <span class="emphase">'+ (returns['irr']*100).toFixed(2) +'%</span> par an.<br/>Soit <span class="emphase">' + amount + '</span> annuel.';
+    resultsDiv.appendChild(title);
+    const title2 = document.createElement('h3')
+    title2.textContent = 'Avec la répartition suivante:';
+    resultsDiv.appendChild(title2);
+    dataArray.forEach(item => {
+        const categoryId = normalizeString(item.category);
+        // Check if the div with the ID already exists
+        let categoryDiv = document.getElementById(categoryId);
+        if (!categoryDiv) {
+            // Create a new div with the corresponding ID
+            categoryDiv = document.createElement('div');
+            categoryDiv.classList.add(bank + "-card");
+            categoryDiv.id = categoryId;
+            // Create a div with class "header-card"
+            const headerDiv = document.createElement('div');
+            headerDiv.classList.add('header-card');
+            headerDiv.textContent = item.category; // Set the category name as content
+            // Append the headerDiv to the categoryDiv
+            categoryDiv.appendChild(headerDiv);
+            // Append the categoryDiv to the body or any other container element
+            resultsDiv.appendChild(categoryDiv);
+        }
+        // Create a div with class "row-card"
+        const rowDiv = document.createElement('div');
+        rowDiv.classList.add('row-card');
+        const columnDiv = document.createElement('div');
+        columnDiv.classList.add('column');
+        var text1 = document.createElement('p');
+        var text2 = document.createElement('p');
+        var text3 = document.createElement('p');
+        if (item.category != "Soutenir le site") {
+            text3.innerHTML = item.amount.toLocaleString('fr-FR', {minimumFractionDigits: 2}) + '€'
+            if (bank === "BoursoBank") {text2.innerHTML = bank};
+            text1.innerHTML = item.name
+        }
+        else { 
+            text3.innerHTML = item.amount
+            text2.innerHTML = "Parrainage"
+            text1.innerHTML = "Soutenez-nous en utilisant le code de parrainage à droite, où <a href=" + item.name + ">Cliquez ici</a>"
+        };
+        columnDiv.appendChild(text1);
+        columnDiv.appendChild(text2);
+        rowDiv.appendChild(columnDiv);
+        rowDiv.appendChild(text3);
+        // Append the rowDiv to the categoryDiv
+        categoryDiv.appendChild(rowDiv);
+    });
+}
+function generate() {
+    if (!isGenerated) {
+        isGenerated = true;
+        document.getElementById("simulate-btn").style.display = "none";
+        // document.getElementById("simulateur").scrollIntoView({
+        //     offset: '10px',
+        //     behavior: 'smooth'
+        // });
+        const element = document.getElementById('results');
+        const y = element.getBoundingClientRect().top + window.pageYOffset - 30;
+        window.scrollTo({top: y, behavior: 'smooth'});
+    }
+    const amount = document.getElementById("amount").value;
+    const risk = document.getElementById("risk").value;
+    const bank = document.getElementById("bank").value;
+    const isLongTerm = document.getElementById("isLongTerm").checked;
+    const data = accounts(amount, risk, bank, isLongTerm);
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = ''; // Remove all content inside the div
+    generateDivs(data.accounts, data.returns);
+}
+document.addEventListener("DOMContentLoaded", function() {
+		const topAmount = document.getElementById("amount-top");
+		topAmount.addEventListener('input', (event) => {
+    	document.getElementById('amount').value = topAmount.value;
+    });
+    document.getElementById("simulate-btn-top").addEventListener("click", function(event){
+        event.preventDefault();
+        generate();
+      });
+    document.getElementById("simulate-btn").addEventListener("click", function(event){
+        event.preventDefault();
+        generate();
+      });
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('input', (event) => {
+            if (isGenerated) {
+                generate();
+            }
+        });
+    });
+    var numberInput = document.querySelector('input[type="number"]');
+    numberInput.addEventListener('input', (event) => {
+        var value = parseInt(numberInput.value);
+        if (value < 0) {
+            numberInput.value = '0';
+        }
+    })
+});
+</script>
 </head>
 <body>
-    <div class="container">
-    <nav class="navbar">
-        <div class="logo">
-            <img src="images/logo.svg" alt="Logo de InvestirMieux">
-        </div>
-        <div class="links">
-            <a href="#simulateur">Simulateur</a>
-            <a href="#informations">Comment ouvrir un compte</a>
-            <a href="#informations">FAQ</a>
-        </div>
-        <a href="#simulateur"><button class="primary">Essayer maintenant</button></a>
-    </nav>
-    <header class="is-small align-center">
-        <div class="column gap-small">
-            <h1 class="display-1">Investir mieux son argent,<br/>en tout simplicité</h1>
-            <p class="hide-mobile">Une recommendation simple et performante de placement sans frais.</p>
-        </div>
-        <div>
-            <img style="height: 200px;" src="images/illustration.svg" alt="Illustration de InvestirMieux">
-        </div>
-    </header>
-    <section class="column gap-medium">
-        <div class="column gap-tiny">
-            <h2>Comment ça marche ?</h2>
-            <p>Choisissez votre montant, niveau de risque et votre banque.</p>
-        </div>
-        <form class="column gap-medium">
-            <div class="inputs" id="simulateur">
-                <div class="input">
-                    <label for="amount">Montant</label>
-                    <input type="number" id="amount" placeholder="1 000€" value=35000 min="0" max="1000000000" required>
-                    <img class="icon" src="images/icon/euro.svg" alt="Euro">
-                </div>
-                <div class="input">
-                    <label for="bank">Banque</label>
-                    <select id="bank">
-                        <option value="BoursoBank">Boursorama</option>
-                        <option value="Fortuneo">Fortuneo</option>
-                    </select>
-                    <img  class="icon" src="images/icon/select.svg" alt="Select">
-                </div>
-                <div class="input">
-                    <div class="row gap-tiny">
-                        <label for="risk">Niveau de risque : <output id="output_range">1</output> / 5</label >
-                    </div>
-                    <!-- <input type="range" id="risk" min="1" max="5" value=0 required oninput="document.getElementById('output_range').value = this.value"> -->
-                    <input type="range" min="1" id="risk" max="5" step="1" value=1 required oninput="document.getElementById('output_range').value = this.value" list="steplist">
-                    <datalist id="steplist">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </datalist>
-                </div>
-                <div class="input">
-                    <p>Placement long terme ?</p>
-                    <label class="switch">
-                        <input id="isLongTerm" name="isLongTerm" type="checkbox">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
+  <div class="global-styles w-embed">
+    <style>
+.is-underline {
+display: inline-block;
+position: relative;
+}
+.is-underline:after {
+content: '';
+position: absolute;
+width: 0%;
+height: 0.125rem;
+bottom: 0;
+left: 0;
+background-color: #898989;
+transition: width 0.3s ease-out;
+}
+.is-underline:hover:after {
+width: 100%;
+}
+/* Set color style to inherit */
+.inherit-color * {
+    color: inherit;
+}
+/* Focus state style for keyboard navigation for the focusable elements */
+*[tabindex]:focus-visible,
+  input[type="file"]:focus-visible {
+   outline: 0.125rem solid #4d65ff;
+   outline-offset: 0.125rem;
+}
+/* Get rid of top margin on first element in any rich text element */
+.w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {
+  margin-top: 0 !important;
+}
+/* Get rid of bottom margin on last element in any rich text element */
+.w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child {
+	margin-bottom: 0 !important;
+}
+/* Prevent all click and hover interaction with an element */
+.pointer-events-off {
+	pointer-events: none;
+}
+/* Enables all click and hover interaction with an element */
+.pointer-events-on {
+  pointer-events: auto;
+}
+/* Create a class of .div-square which maintains a 1:1 dimension of a div */
+.div-square::after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+/* Make sure containers never lose their center alignment */
+.container-medium,.container-small, .container-large {
+	margin-right: auto !important;
+  margin-left: auto !important;
+}
+/* 
+Make the following elements inherit typography styles from the parent and not have hardcoded values. 
+Important: You will not be able to style for example "All Links" in Designer with this CSS applied.
+Uncomment this CSS to use it in the project. Leave this message for future hand-off.
+*/
+/*
+a,
+.w-input,
+.w-select,
+.w-tab-link,
+.w-nav-link,
+.w-dropdown-btn,
+.w-dropdown-toggle,
+.w-dropdown-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-size: inherit;
+}
+*/
+/* Apply "..." after 3 lines of text */
+.text-style-3lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+/* Apply "..." after 2 lines of text */
+.text-style-2lines {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+/* Adds inline flex display */
+.display-inlineflex {
+  display: inline-flex;
+}
+/* These classes are never overwritten */
+.hide {
+  display: none !important;
+}
+@media screen and (max-width: 991px) {
+    .hide, .hide-tablet {
+        display: none !important;
+    }
+}
+  @media screen and (max-width: 767px) {
+    .hide-mobile-landscape{
+      display: none !important;
+    }
+}
+  @media screen and (max-width: 479px) {
+    .hide-mobile{
+      display: none !important;
+    }
+}
+.margin-0 {
+  margin: 0rem !important;
+}
+.padding-0 {
+  padding: 0rem !important;
+}
+.spacing-clean {
+padding: 0rem !important;
+margin: 0rem !important;
+}
+.margin-top {
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+.padding-top {
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+.margin-right {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+.padding-right {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+.margin-bottom {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+.padding-bottom {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+.margin-left {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+.padding-left {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+.margin-horizontal {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+.padding-horizontal {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+.margin-vertical {
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+.padding-vertical {
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+/* Apply "..." at 100% width */
+.truncate-width { 
+		width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+/* Removes native scrollbar */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none; 
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+</style>
+  </div>
+  <div class="page-wrapper">
+    <div data-animation="default" class="navbar2_component w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" data-w-id="8f5923b9-ff44-5d04-d958-7a34d92029c1" role="banner" data-duration="400">
+      <div class="navbar2_container">
+        <a href="#" class="navbar2_logo-link w-nav-brand"><img loading="lazy" src="images/investirmieux.svg" alt="" class="navbar2_logo"></a>
+        <nav role="navigation" id="w-node-_8f5923b9-ff44-5d04-d958-7a34d92029c5-363b5331" class="navbar2_menu is-page-height-tablet w-nav-menu">
+          <a href="#" class="navbar2_link w-nav-link">Comment ça marche</a>
+          <a href="#" class="navbar2_link w-nav-link">Blog</a>
+          <a href="#" class="navbar2_link w-nav-link">Tutoriels</a>
+          <a href="#" class="navbar2_link w-nav-link">FAQ</a>
+        </nav>
+        <div id="w-node-_8f5923b9-ff44-5d04-d958-7a34d92029d8-363b5331" class="navbar2_button-wrapper">
+          <a href="#simulator" class="button is-navbar2-button w-button">Commencer</a>
+          <div class="navbar2_menu-button w-nav-button">
+            <div class="menu-icon2">
+              <div class="menu-icon2_line-top"></div>
+              <div class="menu-icon2_line-middle">
+                <div class="menu-icon2_line-middle-inner"></div>
+              </div>
+              <div class="menu-icon2_line-bottom"></div>
             </div>
-            <!-- <button class="primary">Lancer la simulation</button> -->
-            <input id="firstRun" onclick="generate()" class="primary" type="submit" value="Lancer la simulation"> 
-        </form>
-        <div id="results" class="column gap-small is-small">
-            <!-- Exemple de card -->
-            <!-- <div class="boursorama-card">
-                <div class="row space-between">
-                    <p>Mon compte bancaire</p>
-                    <p>1 000,00€</p>
-                </div>
-                <div class="row space-between">
-                    <div class="column">
-                        <p style="color: #516EA1;">BoursoBank</p>
-                        <p style="color: #C4337D; font-size: 0.75rem; font-weight: 400;">BoursoBank</p>
-                    </div>
-                    <p style="color: #6CD37C;">1 000,00€</p>
-                </div>
-            </div> -->
+          </div>
         </div>
-    </section>
-    <section class="column gap-medium" id="faq">
-        <div class="column gap-tiny">
-            <h2>FAQ</h2>
-            <p>Les questions les plus fréquentes</p>
-        </div>
-        <div class="column gap-medium">
-            <div class="card">
-                <h3>Comment fonctionne le simulateur ?</h3>
-                <p>Le simulateur vous permet de trouver le placement le plus adapté à votre profil. Il vous suffit de renseigner le montant que vous souhaitez placer, votre niveau de risque et votre banque. Le simulateur vous proposera alors le placement le plus adapté à votre profil.</p>
-            </div>
-            <div class="card">
-                <h3>Quels sont les frais de ce service ?</h3>
-                <p>Le service est entièrement gratuit. Nous ne prenons aucune commission sur les placements que nous vous recommandons.</p>
-            </div>
-            <div class="card">
-                <h3>Quelles sont les banques disponibles ?</h3>
-                <p>Actuellement, nous travaillons avec Boursorama et Fortuneo. Nous prévoyons d'ajouter d'autres banques dans le futur.</p>
-            </div>
-        </div>
-    </section>
-    <section class="gap-medium" id="informations">
-        <a href="#" class="card">
-            <img class="icon wrapped" src="images/icon/people.svg" alt="Personnes">
-            <h3>Ouvrir mon compte</h3>
-            <p>Cliquez ici pour ouvrir votre compte Boursorama</p>
-        </a>
-        <div class="card">
-            <img class="icon wrapped" src="images/icon/buildings.svg" alt="Bâtiments">
-            <h3>Explication</h3>
-            <p>Cliquez ici pour comprendre le choix des placements</p>
-        </div>
-        <div class="card">
-            <img class="icon wrapped" src="images/icon/hands.svg" alt="Mains ensemble">
-            <h3>FAQ</h3>
-            <p>Plus de question, consultez la FAQ</p>
-    </section>
-    <section class="column gap-medium" id="equipe">
-        <div class="column gap-tiny">
-            <h2>Rencontrez l'équipe</h2>
-            <p>Une recommendation simple et performante de placement sans frais.</p>
-        </div>
-        <div class="row gap-medium">
-            <div class="card">
-                <div class="row space-between flex-start width-100">
-                    <img class="avatar" src="images/jeremie-clerc.webp" target="_blank" alt="Photo de profil de Jérémie Clerc">
-                    <div class="row gap-small">
-                        <a rel="noopener noreferrer" href="https://www.linkedin.com/in/jeremieclerc/" class="tag round">
-                            <img class="icon is-small" src="images/icon/linkedin.svg" alt="Logo de LinkedIn">
-                        </a>
-                        <div class="tag">
-                            <img class="icon" src="images/icon/portrait.svg" alt="Icône de portrait">
-                            <p>Data Engineer</p>
+      </div>
+    </div>
+    <div class="main-wrapper">
+      <header class="section_header45">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="padding-section-large">
+              <div class="header45_component">
+                <div class="max-width-medium">
+                  <div class="margin-bottom margin-xsmall">
+                    <div class="text-style-tagline">investir en mode easy</div>
+                  </div>
+                  <div class="margin-bottom margin-small">
+                    <h1 blocks-non-deletable="true" class="heading-style-h1">Investir simplement sans frais.</h1>
+                  </div>
+                  <div class="margin-top margin-medium">
+                    <div class="header45_form-block w-form">
+                      <form id="email-form" name="email-form" data-name="Email Form" method="get" class="header45_form" data-wf-page-id="66f478ffa12e94d5363b5331" data-wf-element-id="198a7935-4fa0-9923-d5bb-4f10a95eb11e"><input class="form_input w-node-_198a7935-4fa0-9923-d5bb-4f10a95eb11f-363b5331 w-input" maxlength="256" name="amount-primary" step="1000" data-name="amount-primary" placeholder="Montant à investir (en €)" type="number" id="amount-top" required=""><input type="submit" data-wait="Please wait..." id="simulate-btn-top" class="button is-small w-button" value="Je simule"></form>
+                      <div class="form_message-success-wrapper w-form-done">
+                        <div class="form_message-success">
+                          <div>Thank you! Your submission has been received!</div>
                         </div>
-                    </div>
-                </div>
-                <div>
-                    <h3>Jérémie Clerc</h3>
-                    <p class="is-gray">Senior Data Engineer à Ardian Private Equity</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="row space-between flex-start width-100">
-                    <img class="avatar" src="images/pierre-clerc.webp" alt="Photo de profil de Pierre Clerc">
-                    <div class="row gap-small">
-                        <a rel="noopener noreferrer" href="https://www.linkedin.com/in/pierre-clrc/" target="_blank" class="tag round">
-                            <img class="icon is-small" src="images/icon/linkedin.svg" alt="Logo de LinkedIn">
-                        </a>
-                        <div class="tag">
-                            <img class="icon" src="images/icon/portrait.svg" alt="Icône de portrait">
-                            <p>Web developper</p>
+                      </div>
+                      <div class="form_message-error-wrapper w-form-fail">
+                        <div class="form_message-error">
+                          <div>Oops! Something went wrong while submitting the form.</div>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-                <div>
-                    <h3>Pierre Clerc</h3>
-                    <p class="is-gray">Web developper à NoCode Factory</p>
+                <div class="max-width-xsmall hide-mobile-portrait">
+                  <div class="w-layout-vflex header2_image-wrapper"><img src="images/final.png" loading="lazy" sizes="(max-width: 479px) 100vw, (max-width: 991px) 43vw, 400px" srcset="images/final-p-500.png 500w, images/final-p-800.png 800w, images/final.png 880w" alt="" class="header2_image"><img src="images/man_smiling_nobg_1man_smiling_nobg.webp" loading="lazy" alt="" class="image_foreground is-smaller">
+                    <div class="w-layout-vflex absolute-top-header">
+                      <div class="small-card hide-mobile-landscape">
+                        <div class="w-layout-vflex row gap-small vertical-align">
+                          <div class="caption text-weight-semibold">nouveau message</div>
+                          <div class="w-layout-vflex tag">
+                            <div class="icon-1x1-24 w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 256 256">
+                                <path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-96,85.15L52.57,64H203.43ZM98.71,128,40,181.81V74.19Zm11.84,10.85,12,11.05a8,8,0,0,0,10.82,0l12-11.05,58,53.15H52.57ZM157.29,128,216,74.18V181.82Z"></path>
+                              </svg></div>
+                          </div>
+                        </div>
+                        <div>Tu as vu investirmieux?<br>C&#x27;est un banger !</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
-</div>
-    <footer>
-            <div class="column gap-small">
-                <img src="images/logo_white.svg" alt="Logo de InvestirMieux">
-                <p class="is-light-gray">Le site qui vous aide a mieux placer votre argent,<br/> et avec le minimum de frais !</p>
+      </header>
+      <header class="section_header138">
+        <div class="header138_component">
+          <div class="padding-global">
+            <div class="container-large">
+              <div class="padding-bottom padding-xxlarge">
+                <div id="simulator" class="simulator">
+                  <div class="margin-0 w-form">
+                    <form id="wf-form-simulator" name="wf-form-simulator" data-name="simulator" method="get" class="simulator-form" data-wf-page-id="66f478ffa12e94d5363b5331" data-wf-element-id="e73aeddd-3e98-c713-21d6-b9f26d69a34c">
+                      <div class="w-layout-vflex grid-3col">
+                        <div class="w-layout-vflex form_field-wrapper">
+                          <div class="w-layout-vflex row gap-xsmall"><label for="amount" class="form_field-label">Montant</label>
+                            <div class="icon-1x1-24 w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 256 256">
+                                <path d="M128,88a40,40,0,1,0,40,40A40,40,0,0,0,128,88Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,152ZM240,56H16a8,8,0,0,0-8,8V192a8,8,0,0,0,8,8H240a8,8,0,0,0,8-8V64A8,8,0,0,0,240,56ZM193.65,184H62.35A56.78,56.78,0,0,0,24,145.65v-35.3A56.78,56.78,0,0,0,62.35,72h131.3A56.78,56.78,0,0,0,232,110.35v35.3A56.78,56.78,0,0,0,193.65,184ZM232,93.37A40.81,40.81,0,0,1,210.63,72H232ZM45.37,72A40.81,40.81,0,0,1,24,93.37V72ZM24,162.63A40.81,40.81,0,0,1,45.37,184H24ZM210.63,184A40.81,40.81,0,0,1,232,162.63V184Z"></path>
+                              </svg></div>
+                          </div><input class="form_input is-large w-input" maxlength="256" name="amount" step="1000" data-name="amount" placeholder="Montant" type="number" id="amount">
+                          <div class="w-layout-vflex margin-top margin-xxsmall">
+                            <div class="text-color-green">Indiquer votre montant d&#x27;investissement</div>
+                          </div>
+                        </div>
+                        <div class="w-layout-vflex form_field-wrapper">
+                          <div class="w-layout-vflex row gap-xsmall"><label for="bank" class="form_field-label">Banque</label>
+                            <div class="icon-1x1-24 w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 256 256">
+                                <path d="M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z"></path>
+                              </svg></div>
+                          </div><select id="bank" name="bank" data-name="bank" class="form_input is-large w-select">
+                            <option value="BoursoBank">BoursoBank</option>
+                            <option value="Fortuneo">Fortuneo</option>
+                            <option value="custom">Votre banque</option>
+                          </select>
+                          <div class="w-layout-vflex margin-top margin-xxsmall">
+                            <div class="text-color-green">Choisissez l&#x27;une de nos banques favorites</div>
+                          </div>
+                        </div>
+                        <div id="w-node-_9187815b-7cf7-39db-6cb0-98c68aebc043-363b5331" class="w-layout-vflex form_field-wrapper">
+                          <div class="w-layout-vflex row gap-xsmall"><label for="risk" class="form_field-label">Risque</label>
+                            <div class="icon-1x1-24 w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewbox="0 0 256 256">
+                                <path d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"></path>
+                              </svg></div>
+                          </div>
+                          <div class="w-layout-vflex range-container">
+                            <div class="max-width-full w-embed">
+                              <div class="range-wrapper">
+                                <input name="risk" id="risk" style="width: 100%" type="range" min="1" max="5" step="1" value="1" required="" list="steplist">
+                                <datalist id="steplist">
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                </datalist>
+                              </div>
+                              <style>
+select.form_input.is-large {
+  margin: 0;      
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--base-color-neutral--neutral-lighter) 50%),
+    linear-gradient(135deg, var(--base-color-neutral--neutral-lighter) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
+}
+select.form_input.is-large:hover {
+	background-image:
+    linear-gradient(45deg, transparent 50%, var(--base-color-brand--secondary) 50%),
+    linear-gradient(135deg, var(--base-color-brand--secondary) 50%, transparent 50%);
+}
+input[type="range"] {
+		-webkit-appearance: none;
+		accent-color: red;
+		border: none;
+    padding:0;
+    cursor: pointer;
+    background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    height: 1rem;
+    background: var(--base-color-neutral--neutral-lighter);
+    border-radius: 8px;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: -7px;
+    background-color: white;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    transition: all 0.2s;
+ }
+.range-wrapper:hover input[type="range"]::-webkit-slider-thumb {
+background-color: var(--base-color-brand--secondary);
+ }
+</style>
+                            </div>
+                            <div class="grid-5col">
+                              <div id="w-node-_488e8b3d-1db4-4092-32d9-8967bff5e321-363b5331">1</div>
+                              <div id="w-node-_0dc99828-a239-9f4b-2ca6-4bfd9e765819-363b5331">2</div>
+                              <div id="w-node-_47a6ca05-5f20-8c95-7b8b-7758138d5ddc-363b5331">3</div>
+                              <div id="w-node-_723e37fc-0b9a-5b1d-dead-7a00ebca740a-363b5331">4</div>
+                              <div id="w-node-_22a05e4c-65be-2c30-1981-dd78d10688b3-363b5331">5</div>
+                            </div>
+                          </div>
+                          <div class="w-layout-vflex margin-top margin-xxsmall">
+                            <div class="text-color-green">Évaluer votre prise de risque sur une échelle de 1 à 5</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w-layout-vflex space-between">
+                        <div class="faq2_accordion">
+                          <div data-w-id="d8c884e9-9c5c-f0f9-f778-b80f2d1564e7" class="faq2_question is-simulator">
+                            <div class="text-size-medium">Paramètres supplémentaires</div>
+                            <div class="faq2_icon-wrapper">
+                              <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewbox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"></path>
+                                </svg></div>
+                            </div>
+                          </div>
+                          <div style="width:100%;height:0px" class="faq2_answer">
+                            <div class="max-width-large"><label class="w-checkbox"><input type="checkbox" id="isLongTerm" name="isLongTerm" data-name="isLongTerm" class="w-checkbox-input"><span class="w-form-label" for="isLongTerm">Placement long terme ?</span></label></div>
+                          </div>
+                        </div><input type="submit" data-wait="Please wait..." id="simulate-btn" class="button is-secondary w-button" value="Lancer la simulation">
+                      </div>
+                    </form>
+                    <div class="w-form-done">
+                      <div>Thank you! Your submission has been received!</div>
+                    </div>
+                    <div class="w-form-fail">
+                      <div>Oops! Something went wrong while submitting the form.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="padding-bottom padding-xxlarge">
+                <div class="w-embed">
+                  <style>
+/* BoursoBank */
+.BoursoBank-card {
+    overflow: hidden;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.10);
+    background: #FFF;
+}
+.BoursoBank-card p {
+    font-weight: 600;
+    line-height: 1.5rem; /* 150% */
+}
+.BoursoBank-card > div {
+    padding: 0.375rem 1rem;
+}
+.BoursoBank-card > div:first-child {
+    color: #FFF;
+    text-align: center;
+    background: #4CA5DF;
+}
+/* Simulator */
+.BoursoBank-card .row-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.BoursoBank-card  .row-card > p {
+    color: #6CD37C;
+}
+.BoursoBank-card .row-card .column p:first-child {
+    color: #516EA1;
+}
+.BoursoBank-card .row-card .column p:last-child {
+    color: #C4337D;
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+/* Fortuneo */
+.Fortuneo-card {
+    color: #232323;
+    overflow: hidden;
+    background: #FFF;
+}
+.Fortuneo-card p {
+    font-weight: 600;
+    line-height: 1.5rem; /* 150% */
+    font-size: 16px;
+}
+.Fortuneo-card .header-card {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 32px;
+}
+.Fortuneo-card .row-card {
+    background-color: #FAFAFA;
+    border-left: 1px solid #D0D0D0;
+    border-right: 1px solid #D0D0D0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 16px;
+}
+.Fortuneo-card .row-card:nth-child(2) {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-top: 1px solid #D0D0D0;
+}
+.Fortuneo-card .row-card:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom: 1px solid #D0D0D0;
+}
+.Fortuneo-card .row-card:nth-child(odd) {
+    background-color: #FFFFFF;
+}
+.Fortuneo-card .row-card > p {
+    font-size: 1.2rem;
+}
+</style>
+                </div>
+                <div id="results" class="results"></div>
+              </div>
             </div>
+          </div>
+        </div>
+      </header>
+      <section class="section_layout1">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="padding-section-large">
+              <div class="layout1_component">
+                <div class="w-layout-grid layout1_content">
+                  <div class="layout1_content-left">
+                    <div class="margin-bottom">
+                      <div class="text-style-tagline">C’est pas nous, c’est eux qui le disent</div>
+                    </div>
+                    <div class="margin-bottom margin-large">
+                      <h2 class="heading-style-h2">Des dizaines de clients heureux, et si vous étiez le prochain ?</h2>
+                    </div>
+                    <p class="text-style-quote">&quot;Investirmieux, c&#x27;est le site que je conseille à tous mes potes. Simple, efficace, et surtout gratuit !</p>
+                    <div class="text-style-italic">Salomé, jeune active</div>
+                    <div class="margin-top margin-large">
+                      <div class="button-group">
+                        <a href="#simulator" class="button w-button">Simuler mon projet</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layout1_image-wrapper"><img src="images/woman_phone.png" loading="lazy" alt="" class="image_foreground">
+                    <div class="w-layout-vflex absolute-left-top">
+                      <div class="small-card">
+                        <div class="w-layout-vflex row gap-small vertical-align">
+                          <div class="caption text-weight-semibold">Placement PEA</div>
+                          <div class="tag">+120%</div>
+                        </div>
+                        <div>Vos objectifs sont ont été atteints !</div>
+                      </div>
+                    </div>
+                    <div class="w-layout-vflex absolute-left-bottom">
+                      <div class="small-card hide-mobile-portrait">
+                        <div>Tous vos amis l&#x27;utilisent.<br>Pourquoi pas vous ?</div>
+                      </div>
+                    </div><img loading="lazy" src="images/office.png" alt="" class="layout1_image">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section_faq2">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="padding-section-large">
+              <div class="faq2_component">
+                <div class="margin-bottom margin-xxlarge">
+                  <div class="max-width-large">
+                    <div class="margin-bottom">
+                      <h2 class="heading-style-h2">Questions fréquentes</h2>
+                    </div>
+                    <p class="text-size-medium">Trouvez ici des réponses aux questions courantes sur notre site et nos services.</p>
+                  </div>
+                </div>
+                <div class="faq2_list">
+                  <div class="faq2_accordion">
+                    <div data-w-id="0107ba08-9743-6183-6da5-2fddf7ca1f72" class="faq2_question">
+                      <div class="text-size-medium text-weight-bold">Comment fonctionne le site ?</div>
+                      <div class="faq2_icon-wrapper">
+                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewbox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"></path>
+                          </svg></div>
+                      </div>
+                    </div>
+                    <div style="width:100%;height:0px" class="faq2_answer">
+                      <div class="margin-bottom margin-small">
+                        <div class="max-width-large">
+                          <p>Notre site est conçu pour vous aider à mieux comprendre comment investir votre argent et à gérer votre patrimoine. Nous proposons un simulateur simple pour vous montrer comment investir, ainsi qu&#x27;un blog avec de nombreux articles informatifs.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="faq2_accordion">
+                    <div data-w-id="0107ba08-9743-6183-6da5-2fddf7ca1f7d" class="faq2_question">
+                      <div class="text-size-medium text-weight-bold">Comment fonctionne le simulateur ?</div>
+                      <div class="faq2_icon-wrapper">
+                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewbox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"></path>
+                          </svg></div>
+                      </div>
+                    </div>
+                    <div style="width:100%;height:0px" class="faq2_answer">
+                      <div class="margin-bottom margin-small">
+                        <div class="max-width-large">
+                          <p>Le simulateur vous permet de trouver le placement le plus adapté à votre profil. Il vous suffit de renseigner le montant que vous souhaitez placer, votre niveau de risque et votre banque. Le simulateur vous proposera alors le placement le plus adapté à votre profil.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="faq2_accordion">
+                    <div data-w-id="0107ba08-9743-6183-6da5-2fddf7ca1f88" class="faq2_question">
+                      <div class="text-size-medium text-weight-bold">Comment ouvrir un compte pour investir ?</div>
+                      <div class="faq2_icon-wrapper">
+                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewbox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"></path>
+                          </svg></div>
+                      </div>
+                    </div>
+                    <div style="width:100%;height:0px" class="faq2_answer">
+                      <div class="margin-bottom margin-small">
+                        <div class="max-width-large">
+                          <p>On vous propose 2 banques pour le moment où le faire, très simplement : Fortuneo et BoursoBank. Les tutoriels arrivent très bientôt !</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="faq2_accordion">
+                    <div data-w-id="0107ba08-9743-6183-6da5-2fddf7ca1f93" class="faq2_question">
+                      <div class="text-size-medium text-weight-bold">Quels sont les frais de ce service ?</div>
+                      <div class="faq2_icon-wrapper">
+                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewbox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"></path>
+                          </svg></div>
+                      </div>
+                    </div>
+                    <div style="width:100%;height:0px" class="faq2_answer">
+                      <div class="margin-bottom margin-small">
+                        <div class="max-width-large">
+                          <p>Le service est entièrement gratuit. Nous ne prenons aucune commission sur les placements que nous vous recommandons.<br></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="faq2_accordion">
+                    <div data-w-id="0107ba08-9743-6183-6da5-2fddf7ca1f9e" class="faq2_question">
+                      <div class="text-size-medium text-weight-bold">Comment puis-je contacter l&#x27;équipe ?</div>
+                      <div class="faq2_icon-wrapper">
+                        <div class="icon-embed-small w-embed"><svg width="100%" height="100%" viewbox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 20.8839C16.2374 21.1768 15.7626 21.1768 15.4697 20.8839L7.82318 13.2374C7.53029 12.9445 7.53029 12.4697 7.82318 12.1768L8.17674 11.8232C8.46963 11.5303 8.9445 11.5303 9.2374 11.8232L16 18.5858L22.7626 11.8232C23.0555 11.5303 23.5303 11.5303 23.8232 11.8232L24.1768 12.1768C24.4697 12.4697 24.4697 12.9445 24.1768 13.2374L16.5303 20.8839Z" fill="currentColor"></path>
+                          </svg></div>
+                      </div>
+                    </div>
+                    <div style="width:100%;height:0px" class="faq2_answer">
+                      <div class="margin-bottom margin-small">
+                        <div class="max-width-large">
+                          <p>Si vous avez d&#x27;autres questions ou besoin d&#x27;assistance supplémentaire, n&#x27;hésitez pas à nous contacter. Notre équipe est là pour vous aider dans votre parcours d&#x27;investissement.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer class="footer_component">
+      <div class="container-large">
+        <div class="padding-top padding-xxlarge">
+          <div class="w-layout-vflex padding-global">
+            <div class="footer_top-wrapper">
+              <div id="w-node-_11ca544a-d968-ceb8-6420-2007c87bae69-363b5331" class="card is-primary">
+                <h5 class="heading-style-h3">Newsletter</h5>
+                <p>Notre objectif chez investirmieux : rendre l&#x27;investissement simple, limpide, sans prise de tête.</p>
+                <a href="#" class="button is-secondary w-button">S&#x27;abonner</a>
+              </div>
+              <div id="w-node-bdd1275f-e6d3-8c5e-5d92-3ce4b0790cd6-363b5331" class="card is-secondary">
+                <h5 class="heading-style-h3">Nous contacter</h5>
+                <p>N&#x27;hésitez pas à nous contacter pour plus de renseignements. On vous y répondra avec plaisir !</p>
+                <a href="#" class="button w-button">Nous contacter</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="padding-top padding-xxlarge">
+          <div class="w-layout-grid footer_mid-wrapper">
+            <div class="footer_left-wrapper">
+              <div class="footer_image w-embed"><svg width="534" height="397" viewbox="0 0 534 397" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <mask id="mask0_97_460" style="mask-type:alpha" maskunits="userSpaceOnUse" x="0" y="0" width="534" height="397">
+                    <rect width="534" height="397" fill="#D9D9D9"></rect>
+                  </mask>
+                  <g mask="url(#mask0_97_460)">
+                    <path d="M129.125 513.458C96.2196 513.458 84.8593 489.17 95.0444 440.595C103.663 398.288 129.517 315.24 172.608 191.451C194.545 125.64 210.606 86.4662 220.792 73.9307C233.327 58.2612 247.038 53.1687 261.924 58.653C279.16 64.9208 287.778 77.0646 287.778 95.0844C287.778 103.703 281.511 124.856 268.975 158.546C261.14 178.916 255.656 194.194 252.522 204.379L270.15 184.4C330.477 113.104 389.63 69.6216 447.606 53.9522C474.244 46.901 495.398 49.6431 511.068 62.1786C540.839 85.6828 541.623 132.299 513.418 202.028C460.142 332.868 428.02 420.617 417.051 465.274C412.35 483.294 406.082 496.222 398.248 504.056C391.196 511.107 380.228 513.458 365.342 511.107C349.673 507.974 340.271 500.922 337.137 489.954C334.003 478.202 335.57 462.532 341.838 442.946C364.558 365.382 392.763 287.035 426.453 207.904C433.504 191.451 440.163 173.823 446.431 155.02C450.349 142.484 449.173 136.608 442.906 137.392C437.421 138.175 423.319 147.577 400.598 165.597C381.011 180.483 362.992 197.327 346.539 216.131C279.16 292.127 222.75 375.959 177.309 467.625C164.773 491.912 153.805 506.015 144.403 509.932C139.702 512.283 134.61 513.458 129.125 513.458Z" fill="#0E290F"></path>
+                    <path d="M170.165 62.2859C163.114 70.1207 154.496 74.038 144.311 74.038C134.126 74.038 125.507 70.5124 118.456 63.4612C111.405 56.4099 107.879 47.7917 107.879 37.6066C107.879 27.4215 111.405 18.8033 118.456 11.7521C125.507 3.91737 134.126 0 144.311 0C154.496 0 163.114 3.52563 170.165 10.5769C178 17.6281 181.917 25.8545 181.917 35.2562C181.917 45.4413 178 54.4512 170.165 62.2859ZM36.1917 701.598C9.55371 701.598 -12.7752 692.197 -30.795 673.393C-49.5984 653.807 -59 630.302 -59 602.881C-59 553.522 -53.5157 511.215 -42.5471 475.959C-29.2281 432.084 -1.41488 356.088 40.8926 247.969C49.5107 227.598 60.0876 213.496 72.6231 205.661C85.1587 197.826 97.6942 197.826 110.23 205.661C129.817 218.197 134.126 235.433 123.157 257.37C109.055 286.359 92.9934 323.965 74.9735 370.19C54.6033 423.466 38.1504 477.134 25.6149 531.193C20.914 549.213 18.5636 568.016 18.5636 587.603C19.3471 607.19 23.6562 618.159 31.4909 620.509C44.0264 623.643 64.005 613.458 91.4264 589.954C138.435 547.646 178.783 505.731 212.473 464.207C241.461 429.734 260.264 409.755 268.883 404.271C282.202 395.653 295.521 396.828 308.84 407.797C323.726 420.332 326.859 436.002 318.241 454.805C308.84 473.608 282.985 506.514 240.678 553.522C199.154 599.747 165.856 632.653 140.785 652.24C125.899 663.992 113.755 673.002 104.354 679.269C95.7355 684.754 85.1587 689.846 72.6231 694.547C60.8711 699.248 48.7273 701.598 36.1917 701.598Z" fill="#0E290F"></path>
+                  </g>
+                </svg></div>
+            </div>
+            <div id="w-node-_5a6936f1-3d1f-441e-b35d-9bae09835847-363b5331" class="w-layout-vflex footer_right">
+              <div class="w-layout-grid footer_right-wrapper">
+                <div class="footer2_link-column">
+                  <div class="margin-bottom margin-xxsmall">
+                    <div class="caption">Investirmieux</div>
+                  </div>
+                  <div class="footer2_link-list">
+                    <a href="#" class="footer2_link">Accueil</a>
+                    <a href="#" class="footer2_link">Comment ça marche</a>
+                    <a href="#" class="footer2_link">Témoignages</a>
+                    <a href="#" class="footer2_link">Contact</a>
+                  </div>
+                </div>
+                <div class="footer2_link-column">
+                  <div class="margin-bottom margin-xxsmall">
+                    <div class="caption">Ressources</div>
+                  </div>
+                  <div class="footer2_link-list">
+                    <a href="#" class="footer2_link">Simulateur</a>
+                    <a href="#" class="footer2_link">FAQ</a>
+                    <a href="#" class="footer2_link">Blog</a>
+                    <a href="#" class="footer2_link">Tutoriels</a>
+                  </div>
+                </div>
+              </div>
+              <div class="w-layout-vflex footer_right-bottom">
+                <a href="#" class="footer2_legal-link">Conditions d&#x27;utilisation</a>
+                <a href="#" class="footer2_legal-link">Mentions légales</a>
+                <a href="#" class="footer2_legal-link">Politique cookies</a>
+                <a href="#" class="footer2_legal-link">Politique de confidentialité</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-layout-vflex footer_bottom">
+        <div class="padding-global">
+          <div class="footer_bottom-wrapper">
+            <div id="w-node-_1454d4f7-ebcf-037a-c4cc-546d6f5e6ad9-363b5331" class="w-layout-vflex column gap-small">
+              <a href="https://www.awwwards.com/jury-member/Patxi%20Manzano" target="_blank" class="text-color-alternate">Design by Patxi</a>
+              <div id="w-node-f39056a9-fd58-5780-c784-75a8d4ee455c-363b5331" class="footer_credit-text">© 2024 Investirmieux. Tous droits réservés.</div>
+            </div>
+            <p>Les informations relatives aux performances ne sont fournies qu&#x27;à titre d&#x27;illustration. Les performances passées ne constituent pas un indicateur fiable des résultats futurs. Un investissement en assurance vie, PEA et autres enveloppes financières comporte un degré élevé de risque. Ceci n&#x27;est pas un conseil en investissement.</p>
+          </div>
+        </div>
+      </div>
     </footer>
-
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=66f478ffa12e94d5363b5332" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="js/webflow.js" type="text/javascript"></script>
 </body>
 </html>
